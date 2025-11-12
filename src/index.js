@@ -2,75 +2,85 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 
-function Menu({ search, favourites, onToggleFav }) {
-  const pizzaData = [
-    {
-      name: "Focaccia",
-      ingredients: "Bread with italian olive oil and rosemary",
-      price: 6,
-      photoName: "pizzas/focaccia.jpg",
-      soldOut: false,
-    },
-    {
-      name: "Pizza Margherita",
-      ingredients: "Tomato and mozarella",
-      price: 10,
-      photoName: "pizzas/margherita.jpg",
-      soldOut: false,
-    },
-    {
-      name: "Pizza Spinaci",
-      ingredients: "Tomato, mozarella, spinach, and ricotta cheese",
-      price: 12,
-      photoName: "pizzas/spinaci.jpg",
-      soldOut: false,
-    },
-    {
-      name: "Pizza Funghi",
-      ingredients: "Tomato, mozarella, mushrooms, and onion",
-      price: 12,
-      photoName: "pizzas/funghi.jpg",
-      soldOut: false,
-    },
-    {
-      name: "Pizza Salamino",
-      ingredients: "Tomato, mozarella, and pepperoni",
-      price: 15,
-      photoName: "pizzas/salamino.jpg",
-      soldOut: true,
-    },
-    {
-      name: "Pizza Prosciutto",
-      ingredients:
-        "Tomato, mozarella, ham, aragula, and burrata cheese",
-      price: 18,
-      photoName: "pizzas/prosciutto.jpg",
-      soldOut: false,
-    },
-  ];
+// --- Reusable Pizza data ---
+const pizzaData = [
+  {
+    name: "Focaccia",
+    ingredients: "Bread with italian olive oil and rosemary",
+    price: 6,
+    image: "pizzas/focaccia.jpg",
+    sold: false,
+  },
+  {
+    name: "Pizza Margherita",
+    ingredients: "Tomato and mozzarella",
+    price: 10,
+    image: "pizzas/margherita.jpg",
+    sold: false,
+  },
+  {
+    name: "Pizza Spinaci",
+    ingredients: "Tomato, mozzarella, spinach, and ricotta cheese",
+    price: 12,
+    image: "pizzas/spinaci.jpg",
+    sold: false,
+  },
+  {
+    name: "Pizza Funghi",
+    ingredients: "Tomato, mozzarella, mushrooms, and onion",
+    price: 12,
+    image: "pizzas/funghi.jpg",
+    sold: false,
+  },
+  {
+    name: "Pizza Salamino",
+    ingredients: "Tomato, mozzarella, and pepperoni",
+    price: 15,
+    image: "pizzas/salamino.jpg",
+    sold: true,
+  },
+  {
+    name: "Pizza Prosciutto",
+    ingredients: "Tomato, mozzarella, ham, arugula, and burrata cheese",
+    price: 18,
+    image: "pizzas/prosciutto.jpg",
+    sold: false,
+  },
+];
 
-  const filteredPizzas = pizzaData.filter((pizza) =>
+// --- Menu Component ---
+function Menu({ pizzas, search, favourites, onToggleFav }) {
+  const filteredPizzas = pizzas.filter((pizza) =>
     pizza.name.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-      <div className="pizzas">
-        {filteredPizzas.map((pizza) => (
-          <Pizza
-            key={pizza.name}
-            pizza={pizza}
-            isFav={favourites.includes(pizza.name)}
-            onToggleFav={onToggleFav}
-          />
-        ))}
-      </div>
+
+      {pizzas.length > 0 ? (
+        <>
+          <SearchBar search={search} onSearchChange={onToggleFav.changeSearch} />
+
+          <section className="pizzas">
+            {filteredPizzas.map((pizza) => (
+              <Pizza
+                key={pizza.name}
+                {...pizza}
+                isFav={favourites.includes(pizza.name)}
+                onToggleFav={onToggleFav.toggleFav}
+              />
+            ))}
+          </section>
+        </>
+      ) : (
+        <p>Our menu is currently empty. Please check back later!</p>
+      )}
     </main>
   );
 }
-// --- Components ---
 
+// --- Components ---
 function Header({ isOpen }) {
   return (
     <header className="header">
@@ -93,11 +103,10 @@ function SearchBar({ search, onSearchChange }) {
   );
 }
 
-// Reusable Pizza component with props
-function Pizza({ name, ingredients, price, photoName, soldOut, isFav, onToggleFav }) {
+function Pizza({ name, ingredients, price, image, sold, isFav, onToggleFav }) {
   return (
-    <article className={`pizza ${soldOut ? "sold-out" : ""}`}>
-      <img src={photoName} alt={name} />
+    <article className={`pizza ${sold ? "sold-out" : ""}`}>
+      <img src={image} alt={name} />
       <div>
         <div className="pizza-header">
           <h3>{name}</h3>
@@ -110,42 +119,12 @@ function Pizza({ name, ingredients, price, photoName, soldOut, isFav, onToggleFa
           </button>
         </div>
         <p>{ingredients}</p>
-        <span>{soldOut ? "SOLD OUT" : `$${price}`}</span>
+        <span>{sold ? "SOLD OUT" : `$${price}`}</span>
       </div>
     </article>
   );
 }
 
-function Menu({ pizzas, search, favourites, onToggleFav }) {
-  const filteredPizzas = pizzas.filter((pizza) =>
-    pizza.name.toLowerCase().includes(search.toLowerCase())
-  );
-
-  return (
-    <main className="menu">
-      <h2>Our Menu</h2>
-      {pizzas.length > 0 ? (
-        <>
-          <SearchBar search={search} onSearchChange={onToggleFav.changeSearch} />
-          <section className="pizzas">
-            {filteredPizzas.map((pizza) => (
-              <Pizza
-                key={pizza.name}
-                {...pizza}
-                isFav={favourites.includes(pizza.name)}
-                onToggleFav={onToggleFav.toggleFav}
-              />
-            ))}
-          </section>
-        </>
-      ) : (
-        <p>Our menu is currently empty. Please check back later!</p>
-      )}
-    </main>
-  );
-}
-
-// Separate Order component (for when shop is open)
 function Order() {
   return (
     <div className="order">
@@ -155,7 +134,6 @@ function Order() {
   );
 }
 
-// Footer handles shop open/close condition
 function Footer() {
   const hour = new Date().getHours();
   const isOpen = hour >= 10 && hour < 22;
@@ -167,10 +145,11 @@ function Footer() {
   );
 }
 
-// Root App component
+// --- Root App Component ---
 function App() {
   const [search, setSearch] = useState("");
   const [favourites, setFavourites] = useState([]);
+
   const hour = new Date().getHours();
   const isOpen = hour >= 10 && hour < 22;
 
@@ -202,5 +181,6 @@ function App() {
   );
 }
 
+// --- Render Root ---
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
