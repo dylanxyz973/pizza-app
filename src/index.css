@@ -1,13 +1,207 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@400;500&display=swap");
+
 body {
+  font-family: "Playfair Display", "Poppins", serif;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-color: #fffaf3;
+  color: #2f2f2f;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  text-align: center;
+  padding: 2rem 1rem;
+  background-color: #ffd54f; /* soft golden yellow */
+  color: #fff6da;
+  box-shadow: 0 4px 8px rgba(255, 200, 0, 0.35);
+}
+
+.header h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 2.8rem;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #5a3c00;
+}
+
+.tagline {
+  font-family: "Poppins", sans-serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+  color: #fff6da;
+}
+
+.menu {
+  flex: 1;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+  background-image: url("./assets/pizza.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.menu::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.84);
+  z-index: 0;
+}
+
+.menu h2,
+.search-bar,
+.pizzas {
+  position: relative;
+  z-index: 1;
+}
+
+.menu h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  color: #f57c00; /* light orange accent */
+  letter-spacing: 0.5px;
+}
+
+.search-bar {
+  margin-bottom: 2rem;
+}
+
+.search-bar input {
+  width: 60%;
+  max-width: 400px;
+  padding: 0.6rem 1rem;
+  border: 2px solid #ffd54f; /* yellow border */
+  border-radius: 25px;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  outline: none;
+  background-color: #fffdf5;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(255, 213, 79, 0.25);
+}
+
+.search-bar input:focus {
+  border-color: #ffb74d; /* soft orange */
+  background-color: #fff9e0;
+}
+
+.pizzas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.8rem;
+}
+
+.pizza {
+  background-color: #ffffac;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(255, 193, 7, 0.2);
+  overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.pizza:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 16px rgba(255, 183, 77, 0.4);
+}
+
+.pizza img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.pizza div {
+  padding: 1rem 1.2rem;
+}
+
+.pizza-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  transition: transform 0.2s;
+}
+
+.fav-btn:hover {
+  transform: scale(1.2);
+}
+
+.faved {
+  color: #e63946;
+}
+
+.pizza h3 {
+  margin: 0.5rem 0;
+  color: #f57c00; /* light orange */
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+}
+
+.pizza p {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.pizza span {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-weight: bold;
+  color: #daa520; /* warm yellow price */
+  font-family: "Poppins", sans-serif;
+}
+
+.pizza.sold-out img {
+  filter: grayscale(100%);
+  opacity: 0.6;
+}
+
+.footer {
+  text-align: center;
+  padding: 1.5rem;
+  background: #ffd54f; /* bright yellow */
+  color: #5a3c00;
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0 -3px 8px rgba(255, 200, 0, 0.35);
+}
+
+.order {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.order-btn {
+  background: #f57c00; /* light orange */
+  color: #fff8e1;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.order-btn:hover {
+  background: #ff9800; /* slightly deeper orange */
+  box-shadow: 0 0 10px rgba(255, 152, 0, 0.4);
 }
